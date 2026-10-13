@@ -79,12 +79,31 @@ python -m src.evaluation.run_experiment --provider stub --n-users 20
 
 Para validar com modelo local primeiro, antes de gastar com API:
 
+**macOS / Linux / WSL / Git Bash:**
 ```bash
 ./scripts/setup_ollama.sh llama3.1   # baixa o modelo (troque pelo que preferir)
 ollama serve                          # em outro terminal, mantém rodando
 
 python -m src.evaluation.run_experiment --provider ollama --model llama3.1
 ```
+
+**Windows (PowerShell ou cmd.exe), sem precisar de WSL/Git Bash:**
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\setup_ollama.ps1 llama3.1
+REM O instalador do Ollama pra Windows já roda o servidor em segundo plano
+REM (ícone na bandeja do sistema) — não precisa rodar "ollama serve" à parte.
+
+python -m src.evaluation.run_experiment --provider ollama --model llama3.1
+```
+
+Em qualquer SO, instale o Ollama primeiro em <https://ollama.com/download>.
+
+O cliente HTTP que fala com o Ollama (`OllamaClient` em
+`src/agents/llm_client.py`) já foi testado contra um servidor fake que
+imita exatamente o contrato real do `/api/chat` (ver
+`tests/test_ollama_client.py`) — então, se a conexão falhar na sua
+máquina, o problema é o Ollama não estar instalado/rodando (ou o nome do
+modelo), não um bug na integração.
 
 Trocar de provedor depois (OpenAI, Anthropic) é só mudar `--provider` (ou
 `llm.provider` em `config/config.yaml`) — nenhum agente precisa mudar,
