@@ -1,0 +1,30 @@
+# Central configuration. Code reads sensible defaults even without this
+# file being loaded anywhere yet (see each module's own defaults) — this
+# is the single place to override them once you're past smoke-testing.
+
+llm:
+  provider: ollama        # ollama | openai | anthropic | stub
+  model: llama3.1         # pick any model you've pulled: `ollama pull <model>`
+  host: http://localhost:11434
+  temperature: 0.2
+
+baseline:
+  k: 10                   # k-attribution shortlist size (Arabnezhad et al., Section IV)
+  threshold: 0.4190       # cosine similarity accept threshold (Section V.B)
+
+features:
+  min_words: 1500
+  min_timestamps: 30
+  word_ngram_features_reduction: 60000
+  char_ngram_features_reduction: 30000
+  word_ngram_features_final: 50000
+  char_ngram_features_final: 15000
+
+pipeline:
+  max_rounds: 1            # >1 not implemented yet — see src/agents/orchestrator.py
+  stylometric_weight: 0.7  # used by src/data/features.py combined_similarity
+  temporal_weight: 0.3
+
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed

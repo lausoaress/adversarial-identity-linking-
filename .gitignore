@@ -218,3 +218,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ---- Project-specific (adversarial-identity-linking) ----
+# Real corpora are almost certainly too large (and, for dark-web data,
+# too sensitive) to commit. Keep raw/processed data out of git; see
+# data/README.md for where to point the loaders instead.
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep

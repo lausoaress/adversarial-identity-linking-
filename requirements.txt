@@ -1,0 +1,19 @@
+# Core — needed for everything (features, baseline, schemas, tests)
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+requests>=2.31
+PyYAML>=6.0
+
+# Testing
+pytest>=8.0
+
+# Optional — only needed if you switch providers in config/config.yaml.
+# Leave commented out while running locally against Ollama (requests, above,
+# is all the Ollama client needs via its HTTP API).
+# openai>=1.30
+# anthropic>=0.30
+
+# Optional — only needed once you swap the sequential orchestrator for a
+# real LangGraph StateGraph (see src/agents/orchestrator.py docstring).
+# langgraph>=0.2
