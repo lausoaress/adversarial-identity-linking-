@@ -14,6 +14,11 @@ pytest>=8.0
 # openai>=1.30
 # anthropic>=0.30
 
+# Optional — only needed for the real data loaders in src/data/loaders.py.
+# Leave commented out while still developing against make_synthetic_corpus.
+# beautifulsoup4>=4.12   # load_forum_dump (dark-web forum archive)
+# praw>=7.7               # load_reddit_api (Reddit official API)
+
 # Optional — only needed once you swap the sequential orchestrator for a
 # real LangGraph StateGraph (see src/agents/orchestrator.py docstring).
 # langgraph>=0.2

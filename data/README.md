@@ -44,18 +44,36 @@ usuário — é exatamente isso que o item (1) acima já prova, e os itens
 
 ## Como plugar um corpus real
 
+Os três loaders reais já estão implementados e testados em
+`src/data/loaders.py` (ver `tests/test_loaders.py`):
+
+1. **`load_reddit_csv(path)`** — lê um CSV de um post por linha, no
+   formato comum de dumps Pushshift/Academic Torrents (`author`, `body`,
+   `created_utc` em epoch Unix). Já funciona hoje contra esse formato.
+2. **`load_reddit_api(usernames, ...)`** — busca posts/comentários de uma
+   lista de usuários via API oficial do Reddit (PRAW). Precisa de um app
+   "script" registrado em <https://www.reddit.com/prefs/apps> e das
+   variáveis `REDDIT_CLIENT_ID`/`REDDIT_CLIENT_SECRET` (ver
+   `.env.example`). Depende de `praw` (`pip install praw`), opcional.
+3. **`load_forum_dump(root_dir)`** — lê um arquivo HTML espelhado por
+   wget já extraído (o formato do arquivo do Gwern, incluindo
+   `themajesticgarden-forums.tar.xz`). Os seletores CSS em
+   `ForumDumpSelectors` são um palpite genérico de fórum estilo phpBB —
+   **abra uma página real do arquivo extraído e confira/ajuste os
+   seletores antes de confiar no resultado sobre o corpus completo**
+   (passe um `ForumDumpSelectors` customizado). Depende de
+   `beautifulsoup4` (`pip install beautifulsoup4`), opcional.
+
+Passos:
+
 1. Baixe/organize os dados brutos em `data/raw/` (ignorado pelo git —
    ver `.gitignore`; dados de dark web não devem ir pro repositório, por
    tamanho e por sensibilidade).
-2. Implemente (ou adapte) um loader em `src/data/loaders.py` — já tem um
-   esqueleto `load_reddit_csv` e um stub `load_forum_dump` prontos pra
-   apontar pro formato real do arquivo que você baixar (ex.: dump do
-   The Majestic Garden do arquivo do Gwern, ou export via PRAW do
-   Reddit).
-3. Troque a chamada a `make_synthetic_corpus(...)` por `load_reddit_csv(...)`
-   (ou o loader que você escrever) em `src/evaluation/run_experiment.py`
-   — o resto do pipeline (features, baseline, agentes, métricas) não
-   muda nada.
+2. Se for usar `load_forum_dump`, extraia o `.tar.xz` ali dentro e abra
+   uma página real pra confirmar/ajustar `ForumDumpSelectors`.
+3. Troque a chamada a `make_synthetic_corpus(...)` pelo loader real em
+   `src/evaluation/run_experiment.py` — o resto do pipeline (features,
+   baseline, agentes, métricas) não muda nada.
 
 ## Dados sintéticos (já funciona hoje)
 
