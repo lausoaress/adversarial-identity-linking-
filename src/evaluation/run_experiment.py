@@ -48,6 +48,14 @@ def main() -> None:
     parser.add_argument("--model", default=None, help="Model name, if the provider needs one")
     parser.add_argument("--n-users", type=int, default=12, help="Synthetic users to generate")
     parser.add_argument("--n-negatives", type=int, default=1, help="Negative pairs per positive")
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=None,
+        help="Seconds to wait per Ollama call before giving up (default: OllamaClient's own, "
+        "currently 300s). Raise this if you see requests.exceptions.ReadTimeout on a CPU-only "
+        "machine — model load + JSON-constrained decoding can be slow on the first call.",
+    )
     args = parser.parse_args()
 
     print(f"[1/4] Generating synthetic corpus ({args.n_users} users)...")
@@ -101,6 +109,8 @@ def main() -> None:
 
     print(f"[4/4] Running adversarial pipeline (provider={args.provider})...")
     llm_kwargs = {"model": args.model} if args.model else {}
+    if args.provider == "ollama" and args.timeout is not None:
+        llm_kwargs["timeout_s"] = args.timeout
     if args.provider == "stub":
         llm = StubLLMClient(scripted_responses=_stub_responses_for(len(kept_pairs)))
     else:

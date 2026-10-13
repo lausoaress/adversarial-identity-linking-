@@ -43,7 +43,14 @@ class OllamaClient(LLMClient):
     model: str = "llama3.1"
     host: str = "http://localhost:11434"
     temperature: float = 0.2
-    timeout_s: int = 120
+    # A CPU-only 8B model's first response after the server loads the
+    # weights into memory can easily take longer than this, especially
+    # with json_mode (Ollama has to constrain decoding to valid JSON,
+    # which is slower than free-form text) — 120s was too tight and
+    # produced real-looking but misleading ReadTimeout crashes. Raise
+    # further with --timeout on run_experiment.py if you still see this
+    # on your hardware.
+    timeout_s: int = 300
 
     def complete(self, system_prompt: str, user_prompt: str, *, json_mode: bool = False) -> str:
         import requests  # local import: keep this an optional dependency path
