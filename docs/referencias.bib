@@ -1,0 +1,167 @@
+% referencias.bib
+%
+% Entradas para os trabalhos citados na seção "Trabalhos Relacionados" do
+% TCC (doc colaborativo) e no README dos dados. Citações e metadados
+% (venue, DOI, páginas) verificados via leitura direta dos PDFs da revisão
+% de literatura e, quando necessário, via busca do registro oficial
+% (IRIS/Sapienza, ACL Anthology, MDPI, arXiv). Onde um dado não pôde ser
+% confirmado (ex.: artigo pago), isso está marcado em comentário.
+
+% --- Eixo 1: deanonimização / vinculação de identidade, agente único ---
+
+@inproceedings{afroz2014doppelganger,
+  author    = {Afroz, Sadia and Caliskan-Islam, Aylin and Stolerman, Ariel and Greenstadt, Rachel and McCoy, Damon},
+  title     = {Doppelg{\"a}nger Finder: Taking Stylometry to the Underground},
+  booktitle = {Proceedings of the 2014 IEEE Symposium on Security and Privacy (S\&P)},
+  year      = {2014},
+  pages     = {212--226},
+  doi       = {10.1109/SP.2014.21},
+  publisher = {IEEE}
+}
+
+@inproceedings{ho2016stylometry,
+  author    = {Ho, Thanh Nghia and Ng, Wee Keong},
+  title     = {Application of Stylometry to {D}ark{W}eb Forum User Identification},
+  booktitle = {Information and Communications Security (ICICS 2016)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {9977},
+  pages     = {173--183},
+  year      = {2016},
+  publisher = {Springer International Publishing},
+  doi       = {10.1007/978-3-319-50011-9_14}
+}
+
+@inproceedings{arabnezhad2020light,
+  author    = {Arabnezhad, Ehsan and La Morgia, Massimo and Mei, Alessandro and Nemmi, Eugenio Nerio and Stefa, Julinda},
+  title     = {A Light in the Dark Web: Linking Dark Web Aliases to Real Internet Identities},
+  booktitle = {Proceedings of the 2020 IEEE 40th International Conference on Distributed Computing Systems (ICDCS)},
+  year      = {2020},
+  pages     = {311--321},
+  doi       = {10.1109/ICDCS47774.2020.00081},
+  publisher = {IEEE},
+  note      = {Baseline direto do TCC: pipeline de agente único, 2 estágios (k-atribuição + decisão final por limiar de cosseno); 87--94\% de precisão, dataset próprio não liberado publicamente.}
+}
+
+@misc{lermen2026largescale,
+  author       = {Swanson, Joshua and Lermen, Simon and Paleka, Daniel and Aerni, Michael and Carlini, Nicholas},
+  title        = {Large-scale online deanonymization with {LLM}s},
+  year         = {2026},
+  eprint       = {2602.16800},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CR},
+  url          = {https://arxiv.org/abs/2602.16800}
+}
+
+@misc{zhang2026sala,
+  author       = {Zhang, Boyang and Zhang, Yang},
+  title        = {Assessing Deanonymization Risks with Stylometry-Assisted {LLM} Agent},
+  year         = {2026},
+  eprint       = {2602.23079},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL},
+  url          = {https://arxiv.org/abs/2602.23079}
+}
+
+% --- Eixo 2: debate / verificação adversarial multiagente ---
+
+@inproceedings{han2025debatetodetect,
+  author    = {Han, Chen and Zheng, Wenzhen and Tang, Xijin},
+  title     = {Debate-to-Detect: Reformulating Misinformation Detection as a Real-World Debate with Large Language Models},
+  booktitle = {Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2025},
+  pages     = {},
+  url       = {https://aclanthology.org/2025.emnlp-main.764/},
+  note      = {14 agentes (4 \emph{Affirmative} vs. 4 \emph{Negative} + 6 ju\'{i}zes), 5 est\'{a}gios; +14,7 pontos de F1 sobre zero-shot, +5,45 sobre o melhor rival de debate \'{u}nico; custo computacional ``consider\'{a}vel''.}
+}
+
+@misc{nguyen2025phishing,
+  author       = {Nguyen, Ngoc Tuong Vy and Childress, Felix D and Yin, Yunting},
+  title        = {Debate-Driven Multi-Agent {LLM}s for Phishing Email Detection},
+  year         = {2025},
+  eprint       = {2503.22038},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.MA},
+  url          = {https://arxiv.org/abs/2503.22038},
+  note         = {3 agentes (2 debatedores + 1 ju\'{i}z), 2 rodadas fixas; 98,9--99,4\% de acur\'{a}cia. Sem calibra\c{c}\~{a}o de confian\c{c}a formal no ju\'{i}z (s\'{o} r\'{o}tulo bin\'{a}rio + justificativa textual) e sem baseline de agente \'{u}nico -- n\~{a}o \'{e} um precedente pronto para o Ju\'{i}z do TCC.}
+}
+
+@inproceedings{zeng2025residualized,
+  author    = {Zeng, Peter and Alipoormolabashi, Pegah and Mun, Jihu and Dey, Gourab and Soni, Nikita and Balasubramanian, Niranjan and Rambow, Owen and Schwartz, H. Andrew},
+  title     = {Residualized Similarity for Faithfully Explainable Authorship Verification},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2025},
+  year      = {2025},
+  url       = {https://aclanthology.org/2025.findings-emnlp.856/}
+}
+
+@inproceedings{he2026debatecv,
+  author    = {He, Haorui and Li, Yupeng and Wen, Dacheng and Chen, Yang and Cheng, Reynold and Chen, Donglong and Lau, Francis C. M.},
+  title     = {Debating Truth: Debate-driven Claim Verification with Multiple Large Language Model Agents},
+  booktitle = {Proceedings of the ACM Web Conference 2026 (WWW '26)},
+  year      = {2026},
+  publisher = {ACM},
+  doi       = {10.1145/3774904.3792993},
+  url       = {https://arxiv.org/abs/2507.19090},
+  note      = {Framework DebateCV (2 debatedores + 1 moderador) + Debate-SFT (fine-tuning sint\'{e}tico do moderador); moderadores zero-shot sofrem ``conformity bias'' e tendem a veredito neutro mesmo com evid\^{e}ncia suficiente -- achado direto para o risco de ``Unclear'' excessivo no Ju\'{i}z do TCC.}
+}
+
+@inproceedings{hu2025multiagentjudges,
+  author    = {Hu, Tianyu and Tan, Zhen and Qu, Huaizhi and Wang, Song and Chen, Tianlong},
+  title     = {Multi-Agent Debate for {LLM} Judges with Adaptive Stability Detection},
+  booktitle = {Advances in Neural Information Processing Systems 38 (NeurIPS 2025)},
+  year      = {2025},
+  eprint    = {2510.12697},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  url       = {https://arxiv.org/abs/2510.12697},
+  note      = {Prova formal de que debate multiagente supera agrega\c{c}\~{a}o est\'{a}tica; parada adaptativa via teste de Kolmogorov--Smirnov sobre mistura Beta-Binomial -- relevante para a m\'{e}trica de n\'{u}mero de rodadas de contesta\c{c}\~{a}o do TCC.}
+}
+
+@inproceedings{ko2026weakcues,
+  author    = {Ko, Myeongseob and Jeong, Jihyun and Thakur, Sumiran Singh and Kim, Gyuhak and Jia, Ruoxi},
+  title     = {From Weak Cues to Real Identities: Evaluating Inference-Driven De-Anonymization in {LLM} Agents},
+  booktitle = {Proceedings of the 43rd International Conference on Machine Learning (ICML 2026)},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {306},
+  year      = {2026},
+  eprint    = {2603.18382},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  url       = {https://arxiv.org/abs/2603.18382},
+  note      = {Formaliza ``inference-driven linkage''; introduz benchmark InferLink; 79,2\% de sucesso em deanonimiza\c{c}\~{a}o estilo Netflix Prize (vs. 56,0\% de uma baseline cl\'{a}ssica); trade-off privacidade--utilidade.}
+}
+
+% --- Explicabilidade, rigor forense e survey ---
+
+@article{juola2021verifying,
+  author  = {Juola, Patrick},
+  title   = {Verifying Authorship for Forensic Purposes: A Computational Protocol and Its Validation},
+  journal = {Forensic Science International},
+  year    = {2021},
+  articno = {110824},
+  doi     = {10.1016/j.forsciint.2021.110824},
+  note    = {Artigo pago -- volume/n\'{u}mero exatos n\~{a}o confirmados; dados de acur\'{a}cia (~77\%) e protocolo conforme citado em fontes secund\'{a}rias.}
+}
+
+@article{he2024authorship,
+  author  = {He, Xie and Lashkari, Arash Habibi and Vombatkere, Nikhill and Sharma, Dilli Prasad},
+  title   = {Authorship Attribution Methods, Challenges, and Future Research Directions: A Comprehensive Survey},
+  journal = {Information},
+  volume  = {15},
+  number  = {3},
+  pages   = {131},
+  year    = {2024},
+  doi     = {10.3390/info15030131},
+  publisher = {MDPI}
+}
+
+@article{zhu2026orchestration,
+  author  = {Zhu, Yiwen and Liu, Lihe and Yu, Jiaqian and Zhang, Di},
+  title   = {{LLM}-Based Multi-Agent Orchestration: A Survey of Frameworks, Communication Protocols, and Emerging Patterns},
+  journal = {Future Internet},
+  volume  = {18},
+  number  = {6},
+  pages   = {326},
+  year    = {2026},
+  doi     = {10.3390/fi18060326},
+  publisher = {MDPI}
+}
