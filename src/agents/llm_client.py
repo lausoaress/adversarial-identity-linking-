@@ -43,6 +43,13 @@ class OllamaClient(LLMClient):
     model: str = "llama3.1"
     host: str = "http://localhost:11434"
     temperature: float = 0.2
+    # Reproducibility: with the same seed, model, prompt and hardware, Ollama
+    # returns the same text. None lets it pick a random seed each call.
+    seed: Optional[int] = 13
+    # Context window in tokens. Ollama silently TRUNCATES a prompt that does
+    # not fit, so raising the agents' sample size without raising this would
+    # cut the end of the prompt (the instructions) off without any error.
+    num_ctx: int = 8192
     # A CPU-only 8B model's first response after the server loads the
     # weights into memory can easily take longer than this, especially
     # with json_mode (Ollama has to constrain decoding to valid JSON,
@@ -62,8 +69,10 @@ class OllamaClient(LLMClient):
                 {"role": "user", "content": user_prompt},
             ],
             "stream": False,
-            "options": {"temperature": self.temperature},
+            "options": {"temperature": self.temperature, "num_ctx": self.num_ctx},
         }
+        if self.seed is not None:
+            payload["options"]["seed"] = self.seed
         if json_mode:
             payload["format"] = "json"
 

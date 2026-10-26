@@ -26,7 +26,15 @@ def test_proposer_parses_scripted_response_and_logs_baseline_score():
                 {
                     "hypothesis": "Same person.",
                     "confidence": 0.7,
-                    "evidence": [{"description": "shared phrase", "weight": 0.5}],
+                    "verdict": "link",
+                    "evidence": [
+                        {
+                            "description": "shared phrase",
+                            "quote_dark": "hello world",
+                            "quote_open": "hello world",
+                            "weight": 0.5,
+                        }
+                    ],
                 }
             )
         ]

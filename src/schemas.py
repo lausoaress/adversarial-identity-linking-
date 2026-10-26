@@ -65,12 +65,34 @@ class CandidatePair:
     similarity_score: Optional[float] = None  # from the baseline cosine stage
 
 
+class ProposerVerdict(str, Enum):
+    """The Proposer's own call on a pair. Distinct from the Juiz's
+    `Verdict` (accept/reject/unclear): this is the single-LLM-agent
+    decision, which is also the control arm of the experiment
+    (baseline vs. Proposer alone vs. full adversarial pipeline).
+    """
+
+    LINK = "link"        # likely the same person
+    NO_LINK = "no_link"  # likely different people
+    UNSURE = "unsure"    # not enough to call it either way
+
+
 @dataclass
 class ProposerOutput:
     pair: CandidatePair
     hypothesis: str
     evidence: list[Evidence]
-    confidence: float  # 0..1, Proposer's own estimate
+    confidence: float  # 0..1, Proposer's own estimate that the aliases are the same person
+    verdict: ProposerVerdict = ProposerVerdict.UNSURE
+    # True when the model's reply could not be parsed even after retrying.
+    # Such a result is a placeholder, not a judgement: evaluation code should
+    # count these separately instead of treating them as a real UNSURE.
+    parse_error: bool = False
+    raw_response: str = ""  # last raw model reply, kept for auditing
+    # Evidence the model reported but that failed the quote check (see
+    # src/agents/proposer.py). Kept for analysis, not shown to later agents.
+    dropped_evidence: list[dict[str, Any]] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
 
 @dataclass

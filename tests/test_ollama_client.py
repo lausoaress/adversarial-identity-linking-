@@ -99,3 +99,18 @@ def test_ollama_client_raises_on_connection_refused():
     client = OllamaClient(model="llama3.1", host="http://127.0.0.1:1")
     with pytest.raises(Exception):
         client.complete("system prompt", "user prompt")
+
+
+def test_ollama_client_sends_seed_and_context_size(fake_ollama_server):
+    client = OllamaClient(model="llama3.1", host=fake_ollama_server, seed=7, num_ctx=4096)
+    client.complete("system prompt", "user prompt")
+
+    assert LAST_REQUEST["options"]["seed"] == 7
+    assert LAST_REQUEST["options"]["num_ctx"] == 4096
+
+
+def test_ollama_client_omits_seed_when_none(fake_ollama_server):
+    client = OllamaClient(model="llama3.1", host=fake_ollama_server, seed=None)
+    client.complete("system prompt", "user prompt")
+
+    assert "seed" not in LAST_REQUEST["options"]
