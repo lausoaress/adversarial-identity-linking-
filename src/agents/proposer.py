@@ -190,8 +190,9 @@ exactly WHY.
 Every piece of evidence MUST quote the text. Copy the exact words from the \
 samples, character for character, into quote_dark and quote_open. Evidence \
 without a quote that can be found in the samples will be thrown away, so do \
-not paraphrase and do not invent. If you cannot quote anything that \
-supports a link, say "unsure" or "no_link".
+not paraphrase and do not invent. For evidence about posting times, quote \
+the "Posting activity" line of the alias (for example "00-05h: 60%"). If \
+you cannot quote anything that supports a link, say "unsure" or "no_link".
 
 Be concrete. "The writing style is similar" is not useful; two quoted \
 sentences that both open with "tbh" and discuss the same niche topic are \

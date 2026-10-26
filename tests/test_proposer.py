@@ -251,3 +251,8 @@ def test_two_unusable_replies_give_a_marked_error_not_a_crash():
     assert out.verdict == ProposerVerdict.UNSURE
     assert out.evidence[0].source_agent == "baseline"
     assert out.raw_response == "still no json"
+
+
+def test_prompt_tells_the_model_it_may_quote_the_activity_line():
+    _, llm = _run(_reply())
+    assert "Posting activity" in llm._calls[0]["system"]
