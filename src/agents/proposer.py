@@ -73,10 +73,12 @@ def decide_verdict(
 # ---------------------------------------------------------------------------
 GROUNDING_POLICY = "drop"  # "drop": remove unverified evidence | "flag": keep it, marked grounded=False
 MIN_QUOTE_CHARS = 4        # shorter quotes ("a", "ok") match almost anything, so they do not count
-# "temporal" evidence is about posting hours, not words, so there is no
-# quote to look for. True: keep it without checking (it does not count as
-# verified for the LINK rule). False: treat it like any other evidence.
-TEMPORAL_EXEMPT_FROM_QUOTE_CHECK = True
+# "temporal" evidence is about posting hours. With the activity line now
+# part of the text a quote may come from (see _quote_sources), it can be
+# checked like any other evidence, so it is no longer exempt. True: keep
+# temporal evidence without checking it (it does not count as verified for
+# the LINK rule). False: check it like any other evidence.
+TEMPORAL_EXEMPT_FROM_QUOTE_CHECK = False
 
 _WS = re.compile(r"\s+")
 
@@ -89,8 +91,9 @@ def is_grounded(
     quote_dark: str, quote_open: str, dark_sample: str, open_sample: str
 ) -> bool:
     """True if every quote the model gave appears verbatim (ignoring case
-    and whitespace) in the sample of the alias it was attributed to, and
-    at least one usable quote was given.
+    and whitespace) in the text it was shown for the alias it was attributed
+    to (its message sample plus its posting-activity line), and at least
+    one usable quote was given.
     """
     checks = [
         (q, s)
@@ -299,7 +302,11 @@ class ProposerAgent:
 
         if parsed is None:
             return self._failed_output(pair, raw, last_error)
-        return self._build_output(pair, parsed, raw, dark_sample, open_sample)
+        # A quote is valid if it comes from the messages OR from the posting-
+        # activity line the model was shown (it may cite "00-05h: 60%").
+        dark_source = f"{dark_sample}\n{activity_summary(dark)}"
+        open_source = f"{open_sample}\n{activity_summary(open_)}"
+        return self._build_output(pair, parsed, raw, dark_source, open_source)
 
     # -- helpers ------------------------------------------------------------
 
@@ -339,8 +346,8 @@ class ProposerAgent:
         pair: CandidatePair,
         parsed: dict,
         raw: str,
-        dark_sample: str,
-        open_sample: str,
+        dark_source: str,
+        open_source: str,
     ) -> ProposerOutput:
         warnings: list[str] = []
 
@@ -368,7 +375,7 @@ class ProposerAgent:
             quote_dark = str(item.get("quote_dark") or "")
             quote_open = str(item.get("quote_open") or "")
             exempt = kind == "temporal" and TEMPORAL_EXEMPT_FROM_QUOTE_CHECK
-            grounded = is_grounded(quote_dark, quote_open, dark_sample, open_sample)
+            grounded = is_grounded(quote_dark, quote_open, dark_source, open_source)
 
             record = {
                 "kind": kind,

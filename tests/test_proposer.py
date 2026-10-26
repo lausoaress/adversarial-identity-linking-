@@ -105,14 +105,40 @@ def test_unverified_evidence_is_dropped_but_recorded():
     assert [d["description"] for d in out.dropped_evidence] == ["invented"]
 
 
-def test_temporal_evidence_is_kept_without_quotes():
+def test_temporal_evidence_quoting_the_activity_line_is_kept():
+    # the pair's dark alias posts at hours 1,2,3 -> "00-05h: 100%"
+    reply = _reply(
+        verdict="unsure",
+        evidence=[
+            {"kind": "temporal", "description": "dark alias posts at night",
+             "quote_dark": "00-05h: 100%", "quote_open": "", "weight": 0.4}
+        ],
+    )
+    out, _ = _run(reply)
+    assert any(e.kind == "temporal" for e in out.evidence)
+    assert out.dropped_evidence == []
+
+
+def test_temporal_evidence_with_a_false_quote_is_dropped():
+    reply = _reply(
+        verdict="unsure",
+        evidence=[
+            {"kind": "temporal", "description": "both post in the evening",
+             "quote_dark": "18-23h: 90%", "quote_open": "", "weight": 0.4}
+        ],
+    )
+    out, _ = _run(reply)
+    assert not any(e.kind == "temporal" for e in out.evidence)
+    assert len(out.dropped_evidence) == 1
+
+
+def test_temporal_evidence_without_any_quote_is_dropped():
     reply = _reply(
         verdict="unsure",
         evidence=[{"kind": "temporal", "description": "both post in the evening", "weight": 0.4}],
     )
     out, _ = _run(reply)
-    assert any(e.kind == "temporal" for e in out.evidence)
-    assert out.dropped_evidence == []
+    assert len(out.dropped_evidence) == 1
 
 
 def test_unknown_evidence_kind_falls_back_to_stylometric():
