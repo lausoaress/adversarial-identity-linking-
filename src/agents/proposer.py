@@ -37,18 +37,18 @@ from src.schemas import Alias, CandidatePair, Evidence, ProposerOutput, Proposer
 # ---------------------------------------------------------------------------
 # DECISÃO 1 — verdict rule
 # ---------------------------------------------------------------------------
-LINK_MIN_CONFIDENCE = 0.70      # confidence >= this  -> LINK   (only when the model gave no valid verdict)
-NO_LINK_MAX_CONFIDENCE = 0.30   # confidence <= this  -> NO_LINK
 MIN_GROUNDED_EVIDENCE_FOR_LINK = 1  # a LINK needs at least this many quote-verified evidence items
+# The model's own confidence is NOT used to decide: in the first real-model
+# test it was 0.80-0.90 for right and wrong answers alike. It is still
+# recorded in ProposerOutput.confidence.
 
 
-def decide_verdict(
-    model_verdict: Optional[str], confidence: float, n_grounded: int
-) -> ProposerVerdict:
+def decide_verdict(model_verdict: Optional[str], n_grounded: int) -> ProposerVerdict:
     """Combine what the model said with what we could verify.
 
     1. Use the model's own verdict if it is one of link / no_link / unsure.
-       Otherwise derive one from its confidence.
+       If it gave none (or an invalid one), the result is UNSURE: we do not
+       guess a verdict from its confidence.
     2. A LINK with too little verified evidence is downgraded to UNSURE:
        the model cannot link two aliases on claims we could not find in
        the text.
@@ -56,12 +56,7 @@ def decide_verdict(
     try:
         verdict = ProposerVerdict(str(model_verdict).strip().lower())
     except ValueError:
-        if confidence >= LINK_MIN_CONFIDENCE:
-            verdict = ProposerVerdict.LINK
-        elif confidence <= NO_LINK_MAX_CONFIDENCE:
-            verdict = ProposerVerdict.NO_LINK
-        else:
-            verdict = ProposerVerdict.UNSURE
+        verdict = ProposerVerdict.UNSURE
 
     if verdict == ProposerVerdict.LINK and n_grounded < MIN_GROUNDED_EVIDENCE_FOR_LINK:
         verdict = ProposerVerdict.UNSURE
@@ -401,7 +396,7 @@ class ProposerAgent:
                 )
             )
 
-        verdict = decide_verdict(parsed.get("verdict"), confidence, n_grounded)
+        verdict = decide_verdict(parsed.get("verdict"), n_grounded)
 
         return ProposerOutput(
             pair=pair,

@@ -65,16 +65,19 @@ def test_link_without_verified_evidence_is_downgraded_to_unsure():
     assert out.verdict == ProposerVerdict.UNSURE
 
 
-def test_verdict_is_derived_from_confidence_when_model_gives_none():
-    assert decide_verdict(None, 0.9, n_grounded=1) == ProposerVerdict.LINK
-    assert decide_verdict("maybe??", 0.1, n_grounded=0) == ProposerVerdict.NO_LINK
-    assert decide_verdict(None, 0.5, n_grounded=1) == ProposerVerdict.UNSURE
-    assert decide_verdict(None, 0.9, n_grounded=0) == ProposerVerdict.UNSURE
+def test_missing_or_invalid_verdict_becomes_unsure_whatever_the_confidence():
+    assert decide_verdict(None, n_grounded=3) == ProposerVerdict.UNSURE
+    assert decide_verdict("maybe??", n_grounded=3) == ProposerVerdict.UNSURE
+
+
+def test_high_confidence_without_a_verdict_does_not_become_link():
+    out, _ = _run(_reply(verdict="", confidence=0.95))
+    assert out.verdict == ProposerVerdict.UNSURE
 
 
 def test_no_link_and_unsure_pass_through():
-    assert decide_verdict("no_link", 0.9, n_grounded=0) == ProposerVerdict.NO_LINK
-    assert decide_verdict("UNSURE", 0.9, n_grounded=3) == ProposerVerdict.UNSURE
+    assert decide_verdict("no_link", n_grounded=0) == ProposerVerdict.NO_LINK
+    assert decide_verdict("UNSURE", n_grounded=3) == ProposerVerdict.UNSURE
 
 
 # --- quote check (DECISÃO 2) -------------------------------------------------
